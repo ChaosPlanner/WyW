@@ -1,7 +1,11 @@
 package de.info3.wyw;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.FragmentActivity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -48,5 +52,42 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         LatLng sydney = new LatLng(-34, 151);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        getPermissions();
+
     }
+
+    private void getPermissions() {
+        boolean success=false;
+
+    @SuppressLint("MissingPermission") ActivityResultLauncher<String[]> locationPermissionRequest =
+            registerForActivityResult(new ActivityResultContracts
+                            .RequestMultiplePermissions(), result -> {
+                        Boolean fineLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_FINE_LOCATION, false);
+                        Boolean coarseLocationGranted = result.getOrDefault(
+                                Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                        if (fineLocationGranted != null && fineLocationGranted) {
+                            mMap.setMyLocationEnabled(true);
+                            // Precise location access granted.
+                        } else if (coarseLocationGranted != null && coarseLocationGranted) {
+                            mMap.setMyLocationEnabled(true);
+                            // Only approximate location access granted.
+                        } else {
+                            // No location access granted.
+                        }
+                    }
+                    );
+
+// ...
+
+// Before you perform the actual permission request, check whether your app
+// already has the permissions, and whether your app needs to show a permission
+// rationale dialog. For more details, see Request permissions.
+    locationPermissionRequest.launch(new String[]{
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    });
+
+    }
+
 }
