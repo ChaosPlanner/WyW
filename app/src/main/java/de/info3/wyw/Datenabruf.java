@@ -2,6 +2,8 @@ package de.info3.wyw;
 
 
 
+import android.util.Log;
+
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -11,11 +13,53 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+
+import org.json.JSONObject;
+
+import java.text.BreakIterator;
 
 public class Datenabruf {
 
-    /**RequestQueue requestQueue;
+    String url = "https://httpbin.org/delay/2";
+
+    private JSONObject antwort;
+
+    public Datenabruf() {}
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        setAntwort(response);
+
+                        //BreakIterator textView = null;
+
+                        Log.i("JSONAntwort:", String.valueOf(response));
+
+                        //textView.setText("Response: " + response.toString());
+                    }
+                }, new Response.ErrorListener() {
+
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // TODO: Handle error
+
+                    }
+                });
+
+    public JSONObject getAntwort() {
+        return antwort;
+    }
+
+    public void setAntwort(JSONObject antwort) {
+        this.antwort = antwort;
+    }
+/**RequestQueue requestQueue;
 
     // Instantiate the cache
     Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap
