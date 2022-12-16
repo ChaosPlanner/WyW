@@ -4,6 +4,7 @@ package de.info3.wyw;
 
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
 import com.android.volley.Network;
 import com.android.volley.Request;
@@ -19,6 +20,9 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONObject;
 
 import java.text.BreakIterator;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Datenabruf {
 
@@ -26,10 +30,19 @@ public class Datenabruf {
 
     private JSONObject antwort;
 
+    final String api_key = "5b3ce3597851110001cf624816705a0e98e34a77b89558cd6145883c";
+
     public Datenabruf() {}
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> superHeaders = new HashMap<>(super.getHeaders());
+                        superHeaders.put("Authorization", api_key);
+                        return Collections.unmodifiableMap(superHeaders);
+                    }
 
 
                     @Override
