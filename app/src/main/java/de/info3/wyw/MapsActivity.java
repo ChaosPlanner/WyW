@@ -99,9 +99,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 isPermissiongranted = true;
-                Toast.makeText(MapsActivity.this, "Permission granted", Toast.LENGTH_SHORT).show();
-            }
+                Toast.makeText(MapsActivity.this,"Permission granted",Toast.LENGTH_SHORT).show();
 
+            }
 
             @Override
             public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
