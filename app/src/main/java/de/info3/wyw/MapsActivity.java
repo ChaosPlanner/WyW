@@ -77,8 +77,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-
-
     }
 
     private void checkPermission() {
