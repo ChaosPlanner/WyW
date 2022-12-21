@@ -15,34 +15,41 @@ import com.android.volley.toolbox.BasicNetwork;
 import com.android.volley.toolbox.DiskBasedCache;
 import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Datenabruf {
+public class Datenabruf  {
 
-    String url = "https://httpbin.org/delay/2";
+    String url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
 
     private JSONObject antwort;
 
+    private JSONObject requestData;
+
     final String api_key = "5b3ce3597851110001cf624816705a0e98e34a77b89558cd6145883c";
 
-    public Datenabruf() {}
+    private JsonObjectRequest jsonObjectRequest;
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, null, new Response.Listener<JSONObject>() {
+    public Datenabruf(String startLaenge, String startBreite, String zielLaenge, String zielBreite) {
 
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        HashMap<String, String> superHeaders = new HashMap<>(super.getHeaders());
-                        superHeaders.put("Authorization", api_key);
-                        return Collections.unmodifiableMap(superHeaders);
-                    }
+        try {
+            requestData = new JSONObject("{\"coordinates\":[[" + startLaenge + "," + startBreite + "],[" + zielLaenge + "," + zielBreite + "]],\"alternative_routes\":{\"target_count\":3,\"weight_factor\":1.6}}\")");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        setRequestData(requestData);
+
+        jsonObjectRequest = new JsonObjectRequest
+                (Request.Method.POST, url, getRequestData(), new Response.Listener<JSONObject>() {
 
 
                     @Override
@@ -60,10 +67,23 @@ public class Datenabruf {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        try {
+                            Log.e("JSONFehler", new String(error.networkResponse.data, "UTF-8"));
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
                         // TODO: Handle error
 
                     }
-                });
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> superHeaders = new HashMap<>(super.getHeaders());
+                superHeaders.put("Authorization", api_key);
+                return Collections.unmodifiableMap(superHeaders);
+            }
+        };
+    }
 
     public JSONObject getAntwort() {
         return antwort;
@@ -72,7 +92,21 @@ public class Datenabruf {
     public void setAntwort(JSONObject antwort) {
         this.antwort = antwort;
     }
-/**RequestQueue requestQueue;
+
+    public void setRequestData(JSONObject requestData) {
+
+        this.requestData = requestData;
+    }
+
+    public JSONObject getRequestData() {
+        return requestData;
+    }
+
+    public JsonObjectRequest getJsonObjectRequest() {
+        return jsonObjectRequest;
+    }
+
+    /**RequestQueue requestQueue;
 
     // Instantiate the cache
     Cache cache = new DiskBasedCache(getCacheDir(), 1024 * 1024); // 1MB cap

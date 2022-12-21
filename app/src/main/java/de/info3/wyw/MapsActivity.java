@@ -79,14 +79,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        Datenabruf datenabruf1 = new Datenabruf();
+        Datenabruf datenabruf1 = new Datenabruf("8.681495","49.41461","8.686507","49.41943");
 
         RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
                 getRequestQueue();
 
 
         // Access the RequestQueue through your singleton class.
-        MySingleton.getInstance(this).addToRequestQueue(datenabruf1.jsonObjectRequest);
+        MySingleton.getInstance(this).addToRequestQueue(datenabruf1.getJsonObjectRequest());
 
 
         Log.i("Datenabruf1", String.valueOf(datenabruf1.getAntwort()));
