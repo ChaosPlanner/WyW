@@ -10,4 +10,8 @@
     <color name="primary">#4dd0e1</color>
     <color name="secondary">#88ffff</color>
     <color name="dark">#009faf</color>
+    <color name="backround_text">#F0F6F6</color>
+    <color name="auto1">#E32618</color>
+    <color name="fahrrad1">#1829E3</color>
+    <color name="fuss1">#22BC17</color>
 </resources>
