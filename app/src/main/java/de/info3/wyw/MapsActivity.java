@@ -8,6 +8,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.os.PersistableBundle;
 import android.provider.Settings;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.google.android.gms.internal.maps.zzx;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -76,6 +78,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             }
         });
+
+        Datenabruf datenabruf1 = new Datenabruf("8.681495","49.41461","8.686507","49.41943");
+
+        RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).
+                getRequestQueue();
+
+
+        // Access the RequestQueue through your singleton class.
+        MySingleton.getInstance(this).addToRequestQueue(datenabruf1.getJsonObjectRequest());
+
+
+        Log.i("Datenabruf1", String.valueOf(datenabruf1.getAntwort()));
+
 
     }
 
