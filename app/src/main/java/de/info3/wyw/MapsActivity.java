@@ -36,9 +36,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     MapView mapView;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
-    private float mPositionLat;
-    private float mPositionLong;
-
+    private LatLng StartPosition;
+    private LatLng ZielPosition = null;
+    TextView startKoordinaten;
+    TextView zielKoordinaten;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +57,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         checkPermission();
 
 
-        TextView startKoordinaten = (TextView) findViewById(R.id.textView_start_koordinaten);
-        startKoordinaten.setText("15.74646 , 83.84747" );
+        startKoordinaten = (TextView) findViewById(R.id.textView_start_koordinaten);
+        startKoordinaten.setText("15.74646 , 83.84747");
 
-        TextView zielTxt = (TextView) findViewById(R.id.textView_ziel);
-        TextView zielKoordinaten = (TextView) findViewById(R.id.textView_ziel_koordinaten);
-        zielKoordinaten.setText("17.84747 , 74.8447");
+
+        zielKoordinaten = (TextView) findViewById(R.id.textView_ziel_koordinaten);
 
         Button sucheStarten = (Button) findViewById(R.id.suche_starten_btn);
 
@@ -155,8 +155,16 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-    googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("you"));
 
+
+    googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+        @Override
+        public void onMapLongClick(@NonNull LatLng latLng) {
+            googleMap.addMarker(new MarkerOptions().position(latLng));
+            ZielPosition = latLng;
+            zielKoordinaten.setText(latLng.latitude +" , " +latLng.longitude);
+        }
+    });
 
     }
 }
