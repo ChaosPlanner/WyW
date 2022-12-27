@@ -5,24 +5,15 @@ package de.info3.wyw;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,21 +30,27 @@ public class Datenabruf  {
 
     private JsonObjectRequest jsonObjectRequest;
 
-    public Datenabruf(String startLaenge, String startBreite, String zielLaenge, String zielBreite) {
+    public Datenabruf(String startLaenge, String startBreite, String zielLaenge,
+                      String zielBreite, final DatenabrufInterface datenabrufInterface) {
 
         try {
-            requestData = new JSONObject("{\"coordinates\":[[" + startLaenge + "," + startBreite + "],[" + zielLaenge + "," + zielBreite + "]],\"alternative_routes\":{\"target_count\":3,\"weight_factor\":1.6}}\")");
+            requestData = new JSONObject("{\"coordinates\":[[" + startLaenge +
+                    "," + startBreite + "],[" + zielLaenge + "," + zielBreite +
+                    "]],\"alternative_routes\":{\"target_count\":3,\"weight_factor\":1.6}}\")");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         setRequestData(requestData);
 
         jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, getRequestData(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, url, getRequestData(),
+                        new Response.Listener<JSONObject>() {
 
 
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        datenabrufInterface.onSuccess(response);
 
                         setAntwort(response);
 
