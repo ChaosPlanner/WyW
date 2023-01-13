@@ -46,6 +46,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     TextView zielKoordinaten;
 
     private ProgressBar ladeKreis;
+    public JSONObject carAntwort;
+    JSONObject bikeAntwort;
+    JSONObject footAntwort;
+
+    String urlcar = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    String urlbike = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+    String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,25 +89,102 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 ladeKreis.setVisibility(View.VISIBLE);
 
                 //Dann startet der Datenabruf...
-                Datenabruf datenabruf1 = new Datenabruf("8.681495","49.41461","8.686507","49.41943", new DatenabrufInterface(){
+                //später String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude)
+                Datenabruf datenabruf1 = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlcar, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
                     @Override
                     public void onSuccess(JSONObject response){
-                        Log.i("Datenabruf2", String.valueOf(response));
+                        Log.i("DatenabrufCar", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
 
-                        //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
-                        ladeKreis.setVisibility(GONE);
+                        carAntwort=response;
+
+
 
                         //...und die nächste Activity wird aufgerufen.
-                        Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
-                        startActivity(intent);
+
+                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
+                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                            ladeKreis.setVisibility(GONE);
+                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
+                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
+                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
+                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            startActivity(intent);
+                        }
+
 
                     }
                 }
                 );
+
+                Datenabruf datenabrufbike = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlbike, new DatenabrufInterface(){
+
+                    //... und wenn der Datenabruf fertig ist,
+                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                    @Override
+                    public void onSuccess(JSONObject response){
+                        Log.i("DatenabrufBike", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+
+                        bikeAntwort=response;
+
+
+
+                        //...und die nächste Activity wird aufgerufen.
+
+                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
+                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                            ladeKreis.setVisibility(GONE);
+                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
+                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
+                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
+                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            startActivity(intent);
+                        }
+
+
+                    }
+                }
+                );
+
+                Datenabruf datenabruffoot = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlfoot, new DatenabrufInterface(){
+
+                    //... und wenn der Datenabruf fertig ist,
+                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                    @Override
+                    public void onSuccess(JSONObject response){
+                        Log.i("DatenabrufFoot", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+
+                        footAntwort=response;
+
+
+
+                        //...und die nächste Activity wird aufgerufen.
+
+                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
+                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                            ladeKreis.setVisibility(GONE);
+                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
+                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
+                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
+                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            startActivity(intent);
+                        }
+
+
+                    }
+                }
+                );
+
+
+
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruf1.getJsonObjectRequest());
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufbike.getJsonObjectRequest());
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffoot.getJsonObjectRequest());
 
 
                 // expiziten intent uebergeben????
@@ -189,6 +273,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onLowMemory();
         mapView.onLowMemory();
     }
+
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {

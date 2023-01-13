@@ -21,8 +21,11 @@ import java.util.Map;
 public class Datenabruf  {
 
     String url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    String urlbike = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+    String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
     private JSONObject antwort;
+    private JSONObject bikeAntwort;
 
     private JSONObject requestData;
 
@@ -31,7 +34,7 @@ public class Datenabruf  {
     private JsonObjectRequest jsonObjectRequest;
 
     public Datenabruf(String startLaenge, String startBreite, String zielLaenge,
-                      String zielBreite, final DatenabrufInterface datenabrufInterface) {
+                      String zielBreite,String url, final DatenabrufInterface datenabrufInterface) {
 
         try {
             requestData = new JSONObject("{\"coordinates\":[[" + startLaenge +
@@ -49,6 +52,10 @@ public class Datenabruf  {
 
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        /** bevor es hier weiter geht müssen die zwei Abfragen für Fuß und Rad gemacht werden
+                         * vielleicht mit Schleife?
+                         */
 
                         datenabrufInterface.onSuccess(response);
 
@@ -88,6 +95,14 @@ public class Datenabruf  {
 
     public void setAntwort(JSONObject antwort) {
         this.antwort = antwort;
+    }
+
+    public JSONObject getBikeAntwort() {
+        return bikeAntwort;
+    }
+
+    public void setBikeAntwort(JSONObject bikeAntwort) {
+        this.bikeAntwort = bikeAntwort;
     }
 
     public void setRequestData(JSONObject requestData) {
