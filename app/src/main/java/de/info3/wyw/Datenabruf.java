@@ -5,24 +5,15 @@ package de.info3.wyw;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
-import com.android.volley.Cache;
-import com.android.volley.Network;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.BasicNetwork;
-import com.android.volley.toolbox.DiskBasedCache;
-import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.JsonRequest;
-import com.android.volley.toolbox.StringRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
-import java.text.BreakIterator;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -30,8 +21,11 @@ import java.util.Map;
 public class Datenabruf  {
 
     String url = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    String urlbike = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+    String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
     private JSONObject antwort;
+    private JSONObject bikeAntwort;
 
     private JSONObject requestData;
 
@@ -39,21 +33,31 @@ public class Datenabruf  {
 
     private JsonObjectRequest jsonObjectRequest;
 
-    public Datenabruf(String startLaenge, String startBreite, String zielLaenge, String zielBreite) {
+    public Datenabruf(String startLaenge, String startBreite, String zielLaenge,
+                      String zielBreite,String url, final DatenabrufInterface datenabrufInterface) {
 
         try {
-            requestData = new JSONObject("{\"coordinates\":[[" + startLaenge + "," + startBreite + "],[" + zielLaenge + "," + zielBreite + "]],\"alternative_routes\":{\"target_count\":3,\"weight_factor\":1.6}}\")");
+            requestData = new JSONObject("{\"coordinates\":[[" + startLaenge +
+                    "," + startBreite + "],[" + zielLaenge + "," + zielBreite +
+                    "]],\"alternative_routes\":{\"target_count\":3,\"weight_factor\":1.6}}\")");
         } catch (JSONException e) {
             e.printStackTrace();
         }
         setRequestData(requestData);
 
         jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.POST, url, getRequestData(), new Response.Listener<JSONObject>() {
+                (Request.Method.POST, url, getRequestData(),
+                        new Response.Listener<JSONObject>() {
 
 
                     @Override
                     public void onResponse(JSONObject response) {
+
+                        /** bevor es hier weiter geht müssen die zwei Abfragen für Fuß und Rad gemacht werden
+                         * vielleicht mit Schleife?
+                         */
+
+                        datenabrufInterface.onSuccess(response);
 
                         setAntwort(response);
 
@@ -91,6 +95,14 @@ public class Datenabruf  {
 
     public void setAntwort(JSONObject antwort) {
         this.antwort = antwort;
+    }
+
+    public JSONObject getBikeAntwort() {
+        return bikeAntwort;
+    }
+
+    public void setBikeAntwort(JSONObject bikeAntwort) {
+        this.bikeAntwort = bikeAntwort;
     }
 
     public void setRequestData(JSONObject requestData) {
