@@ -36,6 +36,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -134,6 +136,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
+
         TextView autoLaenge3 = (TextView) findViewById(R.id.txt_laenge_auto_route3);
         autoLaenge3.setText(Entfernung3+" m");
 
@@ -202,6 +205,54 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
 
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mapView.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mapView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapView.onPause();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mapView.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Bundle mapViewBundle = outState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if(mapViewBundle == null) {
+            mapViewBundle = new Bundle();
+            outState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        mapView.onSaveInstanceState(mapViewBundle);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+
+    @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         try {
@@ -210,29 +261,57 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerCar = new GeoJsonLayer(googleMap, antwortCar);
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, antwortCar);
+        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, antwortCar);
+        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, antwortCar);
+        layerCarRed.addLayerToMap();
+        layerCarBlue.addLayerToMap();
+        layerCarGreen.addLayerToMap();
 
-        layerCar.addLayerToMap();
 
         //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
 
         /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
 
-        GeoJsonLineStringStyle lineStringStyleCar1 = layerCar.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
         //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
         //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
 
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-        for (GeoJsonFeature feature : layerCar.getFeatures()) {
-            // Do something to the feature
 
-            lineStringStyleCar1.setColor(colours[i]);
-            feature.setLineStringStyle(lineStringStyleCar1);
-            i++;
+        ArrayList <GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
+            listCarRed.add(feature);
         }
+
+
+        ArrayList <GeoJsonFeature> listCarBlue = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarBlue.getFeatures()) {
+            listCarBlue.add(feature);
+        }
+
+        ArrayList <GeoJsonFeature> listCarGreen = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarGreen.getFeatures()) {
+            listCarGreen.add(feature);
+        }
+
+
+    lineStringStyleCar1.setColor(colours[0]);
+    layerCarRed.removeFeature(listCarRed.get(1));
+    layerCarRed.removeFeature(listCarRed.get(2));
+
+        lineStringStyleCar2.setColor(colours[1]);
+        layerCarBlue.removeFeature(listCarBlue.get(0));
+        layerCarBlue.removeFeature(listCarBlue.get(2));
+
+        lineStringStyleCar3.setColor(colours[2]);
+        layerCarGreen.removeFeature(listCarGreen.get(0));
+        layerCarGreen.removeFeature(listCarGreen.get(1));
 
 
         LatLng start = new LatLng(49.41461,8.681495);
@@ -243,3 +322,4 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
 
     }
 }
+

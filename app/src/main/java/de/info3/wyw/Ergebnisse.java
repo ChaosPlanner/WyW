@@ -64,7 +64,7 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
     String urlbike = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
     String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
-
+    LatLng ZielPosition = null;
 
 
     @Override
@@ -90,6 +90,10 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             antwortCar = new JSONObject(getIntent().getStringExtra("uebergeben1"));
             antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben2"));
             antwortFoot = new JSONObject(getIntent().getStringExtra("uebergeben3"));
+            double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
+            double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
+            ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }

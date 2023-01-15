@@ -5,9 +5,14 @@ import static android.view.View.GONE;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,12 +23,16 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.internal.maps.zzx;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.android.volley.RequestQueue;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -112,6 +121,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben1",String.valueOf(carAntwort));
                             intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            intent.putExtra("uebergeben4",ZielPosition.latitude);
+                            intent.putExtra("uebergeben5",ZielPosition.longitude);
                             startActivity(intent);
                         }
 
@@ -142,6 +153,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben1",String.valueOf(carAntwort));
                             intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            intent.putExtra("uebergeben4",ZielPosition.latitude);
+                            intent.putExtra("uebergeben5",ZielPosition.longitude);
                             startActivity(intent);
                         }
 
@@ -172,6 +185,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben1",String.valueOf(carAntwort));
                             intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                            intent.putExtra("uebergeben4",ZielPosition.latitude);
+                            intent.putExtra("uebergeben5",ZielPosition.longitude);
                             startActivity(intent);
                         }
 
@@ -180,22 +195,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 );
 
-
-
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruf1.getJsonObjectRequest());
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufbike.getJsonObjectRequest());
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffoot.getJsonObjectRequest());
 
-
-                // expiziten intent uebergeben????
-
             }
         });
-
-
-        //RequestQueue queue = MySingleton.getInstance(this.getApplicationContext()).getRequestQueue();
-        // Access the RequestQueue through your singleton class.
-        //Log.i("Datenabruf1", String.valueOf(datenabruf1.getAntwort()));
 
 
     }

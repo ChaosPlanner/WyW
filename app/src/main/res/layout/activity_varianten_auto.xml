@@ -35,10 +35,9 @@
         <!-- indeterminate -->
         <!--<ProgressBar
             android:id="@+id/progress_bar_auto"
-            android:layout_width="20dp"
-            android:layout_height="25dp"
-           android:visibility="gone"
-            >
+            android:layout_width="18dp"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
 
         </ProgressBar>-->
