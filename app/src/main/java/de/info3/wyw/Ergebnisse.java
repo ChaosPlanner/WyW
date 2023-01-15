@@ -65,7 +65,7 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
     String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
     LatLng ZielPosition = null;
-
+    LatLng StartPosition = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +93,9 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
             double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
             ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
+            double startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            double startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            StartPosition = new LatLng(startPositionLat,startPositionlong);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -428,6 +431,9 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
             double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
             ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
+            double startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            double startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            StartPosition = new LatLng(startPositionLat,startPositionlong);
         } catch (JSONException e) {
             e.printStackTrace();
         }

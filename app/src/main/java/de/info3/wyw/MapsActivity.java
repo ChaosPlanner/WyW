@@ -133,6 +133,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
                             intent.putExtra("uebergeben4",ZielPosition.latitude);
                             intent.putExtra("uebergeben5",ZielPosition.longitude);
+                            intent.putExtra("uebergeben6",startlatitude);
+                            intent.putExtra("uebergeben7",startlongitude);
                             startActivity(intent);
                         }
 
@@ -165,6 +167,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
                             intent.putExtra("uebergeben4",ZielPosition.latitude);
                             intent.putExtra("uebergeben5",ZielPosition.longitude);
+                            intent.putExtra("uebergeben6",startlatitude);
+                            intent.putExtra("uebergeben7",startlongitude);
                             startActivity(intent);
                         }
 
@@ -197,6 +201,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             intent.putExtra("uebergeben3",String.valueOf(footAntwort));
                             intent.putExtra("uebergeben4",ZielPosition.latitude);
                             intent.putExtra("uebergeben5",ZielPosition.longitude);
+                            intent.putExtra("uebergeben6",startlatitude);
+                            intent.putExtra("uebergeben7",startlongitude);
                             startActivity(intent);
                         }
 
