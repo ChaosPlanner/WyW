@@ -4,11 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Ergebnisse"
+    tools:context=".VariantenAuto"
     android:orientation="vertical">
 
     <com.google.android.gms.maps.MapView
-        android:id="@+id/map_start"
+        android:id="@+id/map_varianten_auto"
         android:layout_width="match_parent"
         android:layout_height="400dp"
         />
@@ -33,7 +33,7 @@
         android:background="@color/backround_text"
         android:orientation="horizontal">
         <!-- indeterminate -->
-        <ProgressBar
+        <!--<ProgressBar
             android:id="@+id/progress_bar_auto"
             android:layout_width="20dp"
             android:layout_height="25dp"
@@ -41,7 +41,7 @@
             >
 
 
-        </ProgressBar>
+        </ProgressBar>-->
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -77,13 +77,13 @@
                 >
             </TextView>
 
-            <TextView
+            <!--<TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="CO2-Verbrauch"
                 android:layout_marginVertical="5dp"
                 >
-            </TextView>
+            </TextView>-->
         </LinearLayout>
 
         <LinearLayout
@@ -113,7 +113,6 @@
                 android:id="@+id/txt_laenge_auto_route1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 km 250m"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp"
                 >
@@ -123,19 +122,18 @@
                 android:id="@+id/txt_zeit_auto_route1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10 min"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
             </TextView>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/co2_auto_route1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2,31 kg"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
-            </TextView>
+            </TextView>-->
 
         </LinearLayout>
 
@@ -167,7 +165,6 @@
                 android:id="@+id/txt_laenge_auto_route2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1km 100m"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
             </TextView>
@@ -176,19 +173,18 @@
                 android:id="@+id/txt_zeit_auto_route2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="15 min"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
             </TextView>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/co2_auto_route2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
+                android:text=""
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
-            </TextView>
+            </TextView>-->
 
         </LinearLayout>
 
@@ -221,7 +217,6 @@
                 android:id="@+id/txt_laenge_auto_route3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1 km"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
             </TextView>
@@ -230,19 +225,18 @@
                 android:id="@+id/txt_zeit_auto_route3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="45 min"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
             </TextView>
 
-            <TextView
+            <!--<TextView
                 android:id="@+id/co2_auto_route3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="--"
+                android:text=""
                 android:layout_gravity="center_horizontal"
                 android:layout_marginVertical="5dp">
-            </TextView>
+            </TextView>-->
 
         </LinearLayout>
     </LinearLayout>

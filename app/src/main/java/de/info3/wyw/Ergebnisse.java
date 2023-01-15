@@ -1,5 +1,7 @@
 package de.info3.wyw;
 
+import static android.view.View.GONE;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,6 +10,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -41,13 +44,25 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
     GoogleMap map;
     private static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
 
+    private ProgressBar ladeKreis;
+
     int i =0;
     int j = 0;
     int k = 0;
 
+    //Antworten die aus der MapsActivity übergeben werden:
     JSONObject antwortCar = null;
     JSONObject antwortBike = null;
     JSONObject antwortFoot = null;
+
+    //Antworten die an die Detailansicht weiter gegeben werden:
+    JSONObject carAntwort;
+    JSONObject bikeAntwort;
+    JSONObject footAntwort;
+
+    String urlcar = "https://api.openrouteservice.org/v2/directions/driving-car/geojson";
+    String urlbike = "https://api.openrouteservice.org/v2/directions/cycling-regular/geojson";
+    String urlfoot = "https://api.openrouteservice.org/v2/directions/foot-walking/geojson";
 
 
 
@@ -56,6 +71,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ergebnisse);
+        ladeKreis = (ProgressBar) findViewById(R.id.progressBar1);
+        ladeKreis.setVisibility(GONE);
 
 
 
@@ -121,6 +138,68 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
         TextView fahrradZeit = (TextView) findViewById(R.id.txt_zeit_fahrrad);
         fahrradZeit.setText(ZeitBike);
 
+        JSONArray featuresFoot = null;
+
+        String EntfernungFoot = null;
+        String ZeitFoot = null;
+        try {
+            featuresFoot = antwortFoot.getJSONArray("features");
+            JSONObject featureFoot = featuresFoot.getJSONObject(0);
+            JSONObject propertiesFoot = featureFoot.getJSONObject("properties");
+            JSONObject summaryFoot = propertiesFoot.getJSONObject("summary");
+            EntfernungFoot = String.valueOf(summaryFoot.getDouble("distance"));
+            ZeitFoot = String.valueOf(summaryFoot.getDouble("duration"));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        TextView fussLaenge = (TextView) findViewById(R.id.txt_laenge_fuss);
+        fussLaenge.setText(EntfernungFoot);
+
+        TextView fussZeit = (TextView) findViewById(R.id.txt_zeit_fuss);
+        fussZeit.setText(ZeitFoot);
+
+        Button aendernAuto = (Button) findViewById(R.id.btn_aendern_auto);
+
+        aendernAuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ladeKreis.setVisibility(View.VISIBLE);
+
+                Datenabruf datenabrufcar = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlcar, new DatenabrufInterface(){
+
+                    //... und wenn der Datenabruf fertig ist,
+                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                    @Override
+                    public void onSuccess(JSONObject response){
+                        Log.i("DatenabrufCarErgebnisse", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+
+                        carAntwort=response;
+
+
+
+                        //...und die nächste Activity wird aufgerufen.
+
+                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                            ladeKreis.setVisibility(GONE);
+                            Intent intent = new Intent(Ergebnisse.this,VariantenAuto.class);
+                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
+                            startActivity(intent);
+
+
+                    }
+                }
+                );
+
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufcar.getJsonObjectRequest());
+
+
+            }
+        });
+
 /**
 
         TextView autoCo2 = (TextView) findViewById(R.id.co2_auto);
@@ -131,11 +210,7 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
         TextView fahrradCo2 = (TextView) findViewById(R.id.co2_fahrrad);
         fahrradCo2.setText(CO2);
 
-        TextView fussLaenge = (TextView) findViewById(R.id.txt_laenge_fuss);
-        fussLaenge.setText(Entfernung);
 
-        TextView fussZeit = (TextView) findViewById(R.id.txt_zeit_fuss);
-        fussLaenge.setText(Zeit);
 
         TextView fussCo2 = (TextView) findViewById(R.id.co2_fuss);
         fussLaenge.setText(CO2);
