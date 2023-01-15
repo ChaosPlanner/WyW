@@ -62,6 +62,8 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
     double startPositionLat;
     double startPositionlong;
 
+    ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +87,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
             startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
             StartPosition = new LatLng(startPositionLat,startPositionlong);
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -293,9 +296,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
 
-        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+
         //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
         //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
 
@@ -319,19 +320,31 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             listCarGreen.add(feature);
         }
 
+        if (listCarRed.size()>2){
+            layerCarRed.removeFeature(listCarRed.get(2));}
 
-    lineStringStyleCar1.setColor(colours[0]);
-    layerCarRed.removeFeature(listCarRed.get(1));
-    layerCarRed.removeFeature(listCarRed.get(2));
+        if (listCarRed.size()>1){
+            layerCarRed.removeFeature(listCarRed.get(1));}
 
+        if (listCarBlue.size()>2){
+            layerCarBlue.removeFeature(listCarBlue.get(2));}
+
+        if (listCarBlue.size()>1){
+            layerCarBlue.removeFeature(listCarBlue.get(0));}
+
+        if (listCarGreen.size()>2){
+            layerCarGreen.removeFeature(listCarGreen.get(1));}
+
+        if (listCarGreen.size()>1){
+            layerCarGreen.removeFeature(listCarGreen.get(0));}
+
+        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+
+        lineStringStyleCar1.setColor(colours[0]);
         lineStringStyleCar2.setColor(colours[1]);
-        layerCarBlue.removeFeature(listCarBlue.get(0));
-        layerCarBlue.removeFeature(listCarBlue.get(2));
-
         lineStringStyleCar3.setColor(colours[2]);
-        layerCarGreen.removeFeature(listCarGreen.get(0));
-        layerCarGreen.removeFeature(listCarGreen.get(1));
-
 
         googleMap.addMarker(new MarkerOptions().position(StartPosition));
         googleMap.addMarker(new MarkerOptions().position(ZielPosition));

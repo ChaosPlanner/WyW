@@ -37,6 +37,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback {
 
     boolean isPermissiongranted;
@@ -69,6 +71,10 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
 
     double startPositionLat;
     double startPositionlong;
+
+    ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
+    ArrayList<GeoJsonFeature> listBikeBlue = new ArrayList<GeoJsonFeature>();
+    ArrayList<GeoJsonFeature> listFootGreen = new ArrayList<GeoJsonFeature>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -460,30 +466,47 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
         GeoJsonLayer layerBike = new GeoJsonLayer(googleMap, antwortBike);
         GeoJsonLayer layerFoot = new GeoJsonLayer(googleMap, antwortFoot);
 
-        layerCar.addLayerToMap();
-        layerBike.addLayerToMap();
-        layerFoot.addLayerToMap();
 
-        /**for (GeoJsonFeature feature : layerCar.getFeatures()) {
-            if (i>0){
-            layerCar.removeFeature(feature);}
-            i++;
-
+        for (GeoJsonFeature feature : layerCar.getFeatures()) {
+            listCarRed.add(feature);
         }
+
+        if (listCarRed.size()>2){
+            layerCar.removeFeature(listCarRed.get(2));}
+
+        if (listCarRed.size()>1){
+            layerCar.removeFeature(listCarRed.get(1));}
+
+
+        layerCar.addLayerToMap();
+
 
         for (GeoJsonFeature feature : layerBike.getFeatures()) {
-            if (j>0){
-                layerBike.removeFeature(feature);}
-            j++;
-
+            listBikeBlue.add(feature);
         }
 
+        if (listBikeBlue.size()>2){
+            layerBike.removeFeature(listBikeBlue.get(2));}
+
+        if (listBikeBlue.size()>1){
+            layerBike.removeFeature(listBikeBlue.get(1));
+        }
+
+        layerBike.addLayerToMap();
+
+
         for (GeoJsonFeature feature : layerFoot.getFeatures()) {
-            if (k > 0) {
-                layerFoot.removeFeature(feature);
-            }
-            k++;
-        }*/
+            listFootGreen.add(feature);
+        }
+
+        if (listFootGreen.size()>2){
+            layerFoot.removeFeature(listFootGreen.get(2));}
+
+        if (listFootGreen.size()>1){
+            layerFoot.removeFeature(listFootGreen.get(1));}
+
+
+        layerFoot.addLayerToMap();
 
         GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
         lineStringStyle.setColor(getResources().getColor(R.color.auto1));
