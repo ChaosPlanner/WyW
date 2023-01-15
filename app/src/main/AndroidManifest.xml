@@ -18,6 +18,20 @@
         android:theme="@style/Theme.WyW"
         tools:targetApi="31">
         <activity
+            android:name=".VariantenFuss"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".VariantenFahrrad"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".VariantenAuto"
             android:exported="false">
             <meta-data

@@ -12,6 +12,8 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,10 +29,14 @@ import com.google.android.gms.internal.maps.zzx;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.android.volley.RequestQueue;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.karumi.dexter.Dexter;
@@ -53,6 +59,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LatLng ZielPosition = null;
     TextView startKoordinaten;
     TextView zielKoordinaten;
+
+    private Marker destinationMarker;
+    double startlatitude;
+    double startlongitude;
 
     private ProgressBar ladeKreis;
     public JSONObject carAntwort;
@@ -81,8 +91,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         checkPermission();
 
 
-        startKoordinaten = (TextView) findViewById(R.id.textView_start_koordinaten);
-        startKoordinaten.setText("15.74646 , 83.84747");
+        /**startKoordinaten = (TextView) findViewById(R.id.textView_start_koordinaten);
+        startKoordinaten.setText("15.74646 , 83.84747");*/
 
 
         zielKoordinaten = (TextView) findViewById(R.id.textView_ziel_koordinaten);
@@ -281,8 +291,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    /**public void onMapReady(@NonNull GoogleMap googleMap) {
         googleMap.addMarker(new MarkerOptions().position(new LatLng(0,0)).title("you"));
+
 
 
     googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
@@ -294,6 +305,116 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     });
 
+    }*/
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+
+
+        FusedLocationProviderClient fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        fusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        if (location != null) {
+                            startlatitude = location.getLatitude();
+                            startlongitude = location.getLongitude();
+
+                            TextView startlatitudeTextView = (TextView) findViewById(R.id.startlatitude_textview);
+                            startlatitudeTextView.setText(String.format("%.6f", startlatitude));
+
+                            TextView startlongitudeTextView = (TextView) findViewById(R.id.startlongitude_textview);
+                            startlongitudeTextView.setText(String.format("%.6f", startlongitude));
+
+
+                            // Zunächst müssen Sie den aktuellen Standort des Geräts ermitteln.
+                            // Dies kann mit Hilfe von GPS oder von Netzwerkorten erfolgen.
+                            // In diesem Beispiel verwenden wir eine statische Latitude und Longitude, um den Standort zu simulieren.
+                            LatLng currentLocation = new LatLng(startlatitude, startlongitude);
+
+                            // Fügen Sie einen Marker für den aktuellen Standort auf der Karte hinzu.
+                            googleMap.addMarker(new MarkerOptions().position(currentLocation).title("Current Location"));
+
+                            // Zoomen Sie auf die Karte, um den aktuellen Standort anzuzeigen.
+                            googleMap.moveCamera(CameraUpdateFactory.newLatLng(currentLocation));
+                            googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+
+                            //Neu!!!
+
+
+                            // Setze einen OnMapClickListener, um einen Marker als Zielort hinzuzufügen, wenn auf die Karte geklickt wird
+                            googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+                                @Override
+                                public void onMapClick(LatLng latLng) {
+                                    // Entferne den vorherigen Marker, falls vorhanden
+                                    if (destinationMarker != null) {
+                                        destinationMarker.remove();
+                                    }
+
+                                    // Füge einen Marker hinzu und speichere die Koordinaten des Markers als Zielort
+
+                                    MarkerOptions markerOptions = new MarkerOptions().position(latLng).title("Zielort");
+                                    destinationMarker = googleMap.addMarker(markerOptions);
+                                    LatLng destination = destinationMarker.getPosition();
+
+
+                                    // Hole die aktuelle Position des Markers
+                                    LatLng markerPosition = destinationMarker.getPosition();
+                                    MarkerOptions newmarkerOptions = new MarkerOptions().position(markerPosition);
+                                    destinationMarker = googleMap.addMarker(newmarkerOptions);
+                                    LatLng currentPosition = destinationMarker.getPosition();
+
+                                    // Aktualisiere die TextViews mit den Längen- und Breitengradkoordinaten der Position
+                                    updateCoordinateTextViews(currentPosition);
+                                }
+                                private void updateCoordinateTextViews(LatLng position) {
+                                    // Aktualisiere die TextViews mit den Längen- und Breitengradkoordinaten der Position
+
+                                    TextView ziellatitudeTextView = (TextView) findViewById(R.id.textView_ziel_koordinaten);
+                                    ziellatitudeTextView.setText(String.format("%.6f", position.latitude));
+
+                                    TextView ziellongitudeTextView = (TextView) findViewById(R.id.textView_ziel_koordinaten2);
+                                    ziellongitudeTextView.setText(String.format("%.6f", position.longitude));
+                                }
+                            });
+                            // !!!Berechne die Route von dem Startpunkt zum Zielort!!!
+                            // !!!Dazu könntest du zum Beispiel die Directions API von Google Maps verwenden!!!
+
+
+
+                            /*@Override
+                            public void onMapLongClick(@NonNull LatLng latLng;
+                            ) {
+                                googleMap.addMarker(new MarkerOptions().position(latLng));
+                                ZielPosition = latLng;
+                                zielKoordinaten.setText(latLng.latitude + " , " + latLng.longitude);
+                            }*/
+                        }
+
+
+
+
+                    }
+                });
+        googleMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(@NonNull LatLng latLng) {
+                googleMap.addMarker(new MarkerOptions().position(latLng));
+                ZielPosition = latLng;
+                zielKoordinaten.setText(latLng.latitude +" , " +latLng.longitude);
+            }
+        });
     }
 }
 

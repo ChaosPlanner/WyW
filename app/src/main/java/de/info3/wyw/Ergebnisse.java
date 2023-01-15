@@ -204,6 +204,86 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             }
         });
 
+        Button aendernRad = (Button) findViewById(R.id.btn_aendern_fahrrad);
+
+        aendernRad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ladeKreis.setVisibility(View.VISIBLE);
+
+                Datenabruf datenabrufBike = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlbike, new DatenabrufInterface(){
+
+                    //... und wenn der Datenabruf fertig ist,
+                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                    @Override
+                    public void onSuccess(JSONObject response){
+                        Log.i("DatenabrufBikeErgebnisse", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+
+                        bikeAntwort=response;
+
+
+
+                        //...und die nächste Activity wird aufgerufen.
+
+                        //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                        ladeKreis.setVisibility(GONE);
+                        Intent intentFahrrad = new Intent(Ergebnisse.this,VariantenFahrrad.class);
+                        intentFahrrad.putExtra("uebergeben2",String.valueOf(bikeAntwort));
+                        startActivity(intentFahrrad);
+
+
+                    }
+                }
+                );
+
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufBike.getJsonObjectRequest());
+
+
+            }
+        });
+
+        Button aendernFuss = (Button) findViewById(R.id.btn_aendern_fuss);
+
+        aendernFuss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                ladeKreis.setVisibility(View.VISIBLE);
+
+                Datenabruf datenabruffuss = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlfoot, new DatenabrufInterface(){
+
+                    //... und wenn der Datenabruf fertig ist,
+                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                    @Override
+                    public void onSuccess(JSONObject response){
+                        Log.i("DatenabrufFussErgebnisse", String.valueOf(response));
+                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+
+                        footAntwort=response;
+
+
+
+                        //...und die nächste Activity wird aufgerufen.
+
+                        //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                        ladeKreis.setVisibility(GONE);
+                        Intent intent = new Intent(Ergebnisse.this,VariantenFuss.class);
+                        intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                        startActivity(intent);
+
+
+                    }
+                }
+                );
+
+                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffuss.getJsonObjectRequest());
+
+
+            }
+        });
+
 /**
 
         TextView autoCo2 = (TextView) findViewById(R.id.co2_auto);
@@ -345,6 +425,9 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             antwortCar = new JSONObject(getIntent().getStringExtra("uebergeben1"));
             antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben2"));
             antwortFoot = new JSONObject(getIntent().getStringExtra("uebergeben3"));
+            double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
+            double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
+            ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -27,14 +27,26 @@
             android:padding="10dp"
             -->
 
-
-
         <TextView
-            android:id="@+id/textView_start_koordinaten"
+            android:id="@+id/startlatitude_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="25sp"
             android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/startlongitude_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_margin="10dp"/>
+
+        <!--<TextView
+            android:id="@+id/textView_start_koordinaten"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_margin="10dp"/>-->
     </LinearLayout>
 
 
@@ -62,6 +74,13 @@
             android:textSize="25sp"
             android:layout_marginStart="21dp"
             android:layout_marginTop="5dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_ziel_koordinaten2"
+            android:textSize="25sp"
+            android:layout_marginStart="21dp"
+            android:layout_marginTop="10dp"/>
 
     </LinearLayout>
 

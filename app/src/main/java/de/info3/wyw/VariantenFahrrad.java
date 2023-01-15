@@ -5,11 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,11 +17,9 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.maps.android.data.Feature;
 import com.google.maps.android.data.geojson.GeoJsonFeature;
 import com.google.maps.android.data.geojson.GeoJsonLayer;
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle;
-import com.google.maps.android.data.geojson.GeoJsonMultiLineString;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -35,13 +31,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.List;
-
-public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallback {
-
+public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCallback {
     boolean isPermissiongranted;
     MapView mapView;
     GoogleMap map;
@@ -59,20 +49,19 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_varianten_auto);
-
+        setContentView(R.layout.activity_varianten_fahrrad);
         Bundle mapViewBundle = null;
         if(savedInstanceState != null){
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
         }
-        mapView = (MapView) findViewById(R.id.map_varianten_auto);
+        mapView = (MapView) findViewById(R.id.map_varianten_fahrrad);
         mapView.onCreate(mapViewBundle);
 
         mapView.getMapAsync(this);
         checkPermission();
 
         try {
-            antwortCar = new JSONObject(getIntent().getStringExtra("uebergeben1"));
+            antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben2"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -82,67 +71,66 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         String Entfernung = null;
         String Zeit = null;
         try {
-            features = antwortCar.getJSONArray("features");
-            JSONObject featureCar = features.getJSONObject(0);
-            JSONObject propertiesCar = featureCar.getJSONObject("properties");
-            JSONObject summaryCar = propertiesCar.getJSONObject("summary");
-            Entfernung = String.valueOf(summaryCar.getDouble("distance"));
-            Zeit = String.valueOf(summaryCar.getDouble("duration"));
+            features = antwortBike.getJSONArray("features");
+            JSONObject featureBike = features.getJSONObject(0);
+            JSONObject propertiesBike = featureBike.getJSONObject("properties");
+            JSONObject summaryBike = propertiesBike.getJSONObject("summary");
+            Entfernung = String.valueOf(summaryBike.getDouble("distance"));
+            Zeit = String.valueOf(summaryBike.getDouble("duration"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        TextView autoLaenge = (TextView) findViewById(R.id.txt_laenge_auto_route1);
-        autoLaenge.setText(Entfernung+" m");
+        TextView fahrradLaenge = (TextView) findViewById(R.id.txt_laenge_fahrrad_route1);
+        fahrradLaenge.setText(Entfernung+" m");
 
-        TextView autoZeit = (TextView) findViewById(R.id.txt_zeit_auto_route1);
-        autoZeit.setText(Zeit+" sec");
+        TextView fahrradZeit = (TextView) findViewById(R.id.txt_zeit_fahrrad_route1);
+        fahrradZeit.setText(Zeit+" sec");
 
         JSONArray features2 = null;
 
         String Entfernung2 = null;
         String Zeit2 = null;
         try {
-            features2 = antwortCar.getJSONArray("features");
-            JSONObject featureCar2 = features2.getJSONObject(1);
-            JSONObject propertiesCar2 = featureCar2.getJSONObject("properties");
-            JSONObject summaryCar2 = propertiesCar2.getJSONObject("summary");
-            Entfernung2 = String.valueOf(summaryCar2.getDouble("distance"));
-            Zeit2 = String.valueOf(summaryCar2.getDouble("duration"));
+            features2 = antwortBike.getJSONArray("features");
+            JSONObject featureBike2 = features2.getJSONObject(1);
+            JSONObject propertiesBike2 = featureBike2.getJSONObject("properties");
+            JSONObject summaryBike2 = propertiesBike2.getJSONObject("summary");
+            Entfernung2 = String.valueOf(summaryBike2.getDouble("distance"));
+            Zeit2 = String.valueOf(summaryBike2.getDouble("duration"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        TextView autoLaenge2 = (TextView) findViewById(R.id.txt_laenge_auto_route2);
-        autoLaenge2.setText(Entfernung2+" m");
+        TextView fahrradLaenge2 = (TextView) findViewById(R.id.txt_laenge_fahrrad_route2);
+        fahrradLaenge2.setText(Entfernung2+" m");
 
-        TextView autoZeit2 = (TextView) findViewById(R.id.txt_zeit_auto_route2);
-        autoZeit2.setText(Zeit2+" sec");
+        TextView fahrradZeit2 = (TextView) findViewById(R.id.txt_zeit_fahrrad_route2);
+        fahrradZeit2.setText(Zeit2+" sec");
 
         JSONArray features3 = null;
 
         String Entfernung3 = null;
         String Zeit3 = null;
         try {
-            features3 = antwortCar.getJSONArray("features");
-            JSONObject featureCar3 = features3.getJSONObject(2);
-            JSONObject propertiesCar3 = featureCar3.getJSONObject("properties");
-            JSONObject summaryCar3 = propertiesCar3.getJSONObject("summary");
-            Entfernung3 = String.valueOf(summaryCar3.getDouble("distance"));
-            Zeit3 = String.valueOf(summaryCar3.getDouble("duration"));
+            features3 = antwortBike.getJSONArray("features");
+            JSONObject featureBike3 = features3.getJSONObject(2);
+            JSONObject propertiesBike3 = featureBike3.getJSONObject("properties");
+            JSONObject summaryBike3 = propertiesBike3.getJSONObject("summary");
+            Entfernung3 = String.valueOf(summaryBike3.getDouble("distance"));
+            Zeit3 = String.valueOf(summaryBike3.getDouble("duration"));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
+        TextView fahrradLaenge3 = (TextView) findViewById(R.id.txt_laenge_fahrrad_route3);
+        fahrradLaenge3.setText(Entfernung3+" m");
 
-        TextView autoLaenge3 = (TextView) findViewById(R.id.txt_laenge_auto_route3);
-        autoLaenge3.setText(Entfernung3+" m");
-
-        TextView autoZeit3 = (TextView) findViewById(R.id.txt_zeit_auto_route3);
-        autoZeit3.setText(Zeit3+" sec");
+        TextView fahrradZeit3 = (TextView) findViewById(R.id.txt_zeit_fahrrad_route3);
+        fahrradZeit3.setText(Zeit3+" sec");
 /*
         TextView auto1Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route1);
         auto1Laenge.setText(Entfernung);
@@ -184,7 +172,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             @Override
             public void onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
                 isPermissiongranted = true;
-                Toast.makeText(VariantenAuto.this,"Permission granted",Toast.LENGTH_SHORT).show();
+                Toast.makeText(VariantenFahrrad.this,"Permission granted",Toast.LENGTH_SHORT).show();
 
             }
 
@@ -252,67 +240,38 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
     }
 
 
-
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         try {
-            antwortCar = new JSONObject(getIntent().getStringExtra("uebergeben1"));
+            antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben1"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, antwortCar);
-        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, antwortCar);
-        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, antwortCar);
-        layerCarRed.addLayerToMap();
-        layerCarBlue.addLayerToMap();
-        layerCarGreen.addLayerToMap();
+        GeoJsonLayer layerBike = new GeoJsonLayer(googleMap, antwortBike);
 
+        layerBike.addLayerToMap();
 
         //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
 
         /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
-        lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
+         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
 
-        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleBike1 = layerBike.getDefaultLineStringStyle();
         //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
         //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
 
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
+        /**for (GeoJsonFeature feature : layerBike.getFeatures()) {
+         // Do something to the feature
 
-        ArrayList <GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
-            listCarRed.add(feature);
-        }
-
-
-        ArrayList <GeoJsonFeature> listCarBlue = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarBlue.getFeatures()) {
-            listCarBlue.add(feature);
-        }
-
-        ArrayList <GeoJsonFeature> listCarGreen = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarGreen.getFeatures()) {
-            listCarGreen.add(feature);
-        }
-
-
-    lineStringStyleCar1.setColor(colours[0]);
-    layerCarRed.removeFeature(listCarRed.get(1));
-    layerCarRed.removeFeature(listCarRed.get(2));
-
-        lineStringStyleCar2.setColor(colours[1]);
-        layerCarBlue.removeFeature(listCarBlue.get(0));
-        layerCarBlue.removeFeature(listCarBlue.get(2));
-
-        lineStringStyleCar3.setColor(colours[2]);
-        layerCarGreen.removeFeature(listCarGreen.get(0));
-        layerCarGreen.removeFeature(listCarGreen.get(1));
+         lineStringStyleBike1.setColor(colours[i]);
+         feature.setLineStringStyle(lineStringStyleBike1);
+         i++;
+         }*/
 
 
         LatLng start = new LatLng(49.41461,8.681495);
@@ -323,4 +282,3 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
 
     }
 }
-
