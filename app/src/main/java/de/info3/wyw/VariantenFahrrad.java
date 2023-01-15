@@ -46,6 +46,12 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
     JSONObject antwortBike = null;
     JSONObject antwortFoot = null;
 
+    LatLng ZielPosition = null;
+    LatLng StartPosition = null;
+
+    double startPositionLat;
+    double startPositionlong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,12 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
 
         try {
             antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben2"));
+            double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
+            double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
+            ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
+            startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            StartPosition = new LatLng(startPositionLat,startPositionlong);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -244,7 +256,13 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
     public void onMapReady(@NonNull GoogleMap googleMap) {
 
         try {
-            antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben1"));
+            antwortBike = new JSONObject(getIntent().getStringExtra("uebergeben2"));
+            double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
+            double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
+            ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
+            startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            StartPosition = new LatLng(startPositionLat,startPositionlong);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -274,11 +292,11 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
          }*/
 
 
-        LatLng start = new LatLng(49.41461,8.681495);
-        googleMap.addMarker(new MarkerOptions().position(start));
+        googleMap.addMarker(new MarkerOptions().position(StartPosition));
+        googleMap.addMarker(new MarkerOptions().position(ZielPosition));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start,15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
     }
 }

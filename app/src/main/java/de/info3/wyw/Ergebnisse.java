@@ -67,6 +67,9 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
     LatLng ZielPosition = null;
     LatLng StartPosition = null;
 
+    double startPositionLat;
+    double startPositionlong;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -93,8 +96,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
             double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
             ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
-            double startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
-            double startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
             StartPosition = new LatLng(startPositionLat,startPositionlong);
 
         } catch (JSONException e) {
@@ -175,7 +178,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
 
                 ladeKreis.setVisibility(View.VISIBLE);
 
-                Datenabruf datenabrufcar = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlcar, new DatenabrufInterface(){
+                Datenabruf datenabrufcar = new Datenabruf(String.valueOf(startPositionlong),String.valueOf(startPositionLat),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlcar, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
@@ -194,6 +198,10 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
                             ladeKreis.setVisibility(GONE);
                             Intent intent = new Intent(Ergebnisse.this,VariantenAuto.class);
                             intent.putExtra("uebergeben1",String.valueOf(carAntwort));
+                            intent.putExtra("uebergeben4",ZielPosition.latitude);
+                            intent.putExtra("uebergeben5",ZielPosition.longitude);
+                            intent.putExtra("uebergeben6",startPositionLat);
+                            intent.putExtra("uebergeben7",startPositionlong);
                             startActivity(intent);
 
 
@@ -215,7 +223,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
 
                 ladeKreis.setVisibility(View.VISIBLE);
 
-                Datenabruf datenabrufBike = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlbike, new DatenabrufInterface(){
+                Datenabruf datenabrufBike = new Datenabruf(String.valueOf(startPositionlong),String.valueOf(startPositionLat),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlbike, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
@@ -234,6 +243,10 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
                         ladeKreis.setVisibility(GONE);
                         Intent intentFahrrad = new Intent(Ergebnisse.this,VariantenFahrrad.class);
                         intentFahrrad.putExtra("uebergeben2",String.valueOf(bikeAntwort));
+                        intentFahrrad.putExtra("uebergeben4",ZielPosition.latitude);
+                        intentFahrrad.putExtra("uebergeben5",ZielPosition.longitude);
+                        intentFahrrad.putExtra("uebergeben6",startPositionLat);
+                        intentFahrrad.putExtra("uebergeben7",startPositionlong);
                         startActivity(intentFahrrad);
 
 
@@ -255,7 +268,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
 
                 ladeKreis.setVisibility(View.VISIBLE);
 
-                Datenabruf datenabruffuss = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlfoot, new DatenabrufInterface(){
+                Datenabruf datenabruffuss = new Datenabruf(String.valueOf(startPositionlong),String.valueOf(startPositionLat),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlfoot, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
@@ -274,6 +288,10 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
                         ladeKreis.setVisibility(GONE);
                         Intent intent = new Intent(Ergebnisse.this,VariantenFuss.class);
                         intent.putExtra("uebergeben3",String.valueOf(footAntwort));
+                        intent.putExtra("uebergeben4",ZielPosition.latitude);
+                        intent.putExtra("uebergeben5",ZielPosition.longitude);
+                        intent.putExtra("uebergeben6",startPositionLat);
+                        intent.putExtra("uebergeben7",startPositionlong);
                         startActivity(intent);
 
 
@@ -431,8 +449,8 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             double ZielPositionLat = getIntent().getDoubleExtra("uebergeben4",0);
             double ZielPositionlong = getIntent().getDoubleExtra("uebergeben5",0);
             ZielPosition = new LatLng(ZielPositionLat,ZielPositionlong);
-            double startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
-            double startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
+            startPositionLat = getIntent().getDoubleExtra("uebergeben6",0);
+            startPositionlong = getIntent().getDoubleExtra("uebergeben7",0);
             StartPosition = new LatLng(startPositionLat,startPositionlong);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -476,11 +494,12 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
         GeoJsonLineStringStyle lineStringStyleFoot = layerFoot.getDefaultLineStringStyle();
         lineStringStyleFoot.setColor(getResources().getColor(R.color.fuss1));
 
-        LatLng start = new LatLng(49.41461,8.681495);
-        googleMap.addMarker(new MarkerOptions().position(start));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(start));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(start,15));
+        googleMap.addMarker(new MarkerOptions().position(StartPosition));
+        googleMap.addMarker(new MarkerOptions().position(ZielPosition));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
 
     }

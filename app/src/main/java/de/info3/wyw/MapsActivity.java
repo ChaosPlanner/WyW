@@ -109,7 +109,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 //Dann startet der Datenabruf...
                 //später String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude)
-                Datenabruf datenabruf1 = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlcar, new DatenabrufInterface(){
+                Datenabruf datenabruf1 = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlcar, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
@@ -143,7 +144,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 );
 
-                Datenabruf datenabrufbike = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlbike, new DatenabrufInterface(){
+                Datenabruf datenabrufbike = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlbike, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
@@ -177,7 +179,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 );
 
-                Datenabruf datenabruffoot = new Datenabruf("8.681495","49.41461","8.686507","49.41943", urlfoot, new DatenabrufInterface(){
+                Datenabruf datenabruffoot = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
+                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlfoot, new DatenabrufInterface(){
 
                     //... und wenn der Datenabruf fertig ist,
                     // sorgt das DatenabrufInterface dafür, dass es weiter geht.
