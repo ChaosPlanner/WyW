@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,6 +63,10 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
     double startPositionLat;
     double startPositionlong;
 
+    JSONObject featureCar;
+    JSONObject featureCar2;
+    JSONObject featureCar3;
+
     ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
 
     @Override
@@ -98,7 +103,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         String Zeit = null;
         try {
             features = antwortCar.getJSONArray("features");
-            JSONObject featureCar = features.getJSONObject(0);
+            featureCar = features.getJSONObject(0);
             JSONObject propertiesCar = featureCar.getJSONObject("properties");
             JSONObject summaryCar = propertiesCar.getJSONObject("summary");
             Entfernung = String.valueOf(summaryCar.getDouble("distance"));
@@ -120,7 +125,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         String Zeit2 = null;
         try {
             features2 = antwortCar.getJSONArray("features");
-            JSONObject featureCar2 = features2.getJSONObject(1);
+            featureCar2 = features2.getJSONObject(1);
             JSONObject propertiesCar2 = featureCar2.getJSONObject("properties");
             JSONObject summaryCar2 = propertiesCar2.getJSONObject("summary");
             Entfernung2 = String.valueOf(summaryCar2.getDouble("distance"));
@@ -142,7 +147,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         String Zeit3 = null;
         try {
             features3 = antwortCar.getJSONArray("features");
-            JSONObject featureCar3 = features3.getJSONObject(2);
+            featureCar3 = features3.getJSONObject(2);
             JSONObject propertiesCar3 = featureCar3.getJSONObject("properties");
             JSONObject summaryCar3 = propertiesCar3.getJSONObject("summary");
             Entfernung3 = String.valueOf(summaryCar3.getDouble("distance"));
@@ -283,12 +288,10 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, antwortCar);
-        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, antwortCar);
-        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, antwortCar);
-        layerCarRed.addLayerToMap();
-        layerCarBlue.addLayerToMap();
-        layerCarGreen.addLayerToMap();
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureCar);
+        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureCar2);
+        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureCar3);
+
 
 
         //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
@@ -338,6 +341,10 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         if (listCarGreen.size()>1){
             layerCarGreen.removeFeature(listCarGreen.get(0));}
 
+
+        Log.i("ListeAuto1",String.valueOf(listCarRed));
+        Log.i("LayerAuto1", String.valueOf(layerCarRed));
+
         GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
         GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
         GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
@@ -345,6 +352,10 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         lineStringStyleCar1.setColor(colours[0]);
         lineStringStyleCar2.setColor(colours[1]);
         lineStringStyleCar3.setColor(colours[2]);
+
+        layerCarRed.addLayerToMap();
+        layerCarBlue.addLayerToMap();
+        layerCarGreen.addLayerToMap();
 
         googleMap.addMarker(new MarkerOptions().position(StartPosition));
         googleMap.addMarker(new MarkerOptions().position(ZielPosition));
