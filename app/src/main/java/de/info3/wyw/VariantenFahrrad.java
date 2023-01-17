@@ -248,16 +248,6 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureBike3);
 
 
-
-        //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
-
-        /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
-         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
-
-
-        //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
-        //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
-
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
@@ -325,6 +315,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureBike));
+                startActivity(intent);
             }
         });
 
@@ -334,6 +325,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureBike2));
+                startActivity(intent);
             }
         });
 
@@ -343,6 +335,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureBike3));
+                startActivity(intent);
             }
         });
 
