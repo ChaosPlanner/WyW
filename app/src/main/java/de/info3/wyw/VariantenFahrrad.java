@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +34,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCallback {
     boolean isPermissiongranted;
     MapView mapView;
@@ -46,6 +51,9 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
     JSONObject antwortBike = null;
     JSONObject antwortFoot = null;
 
+    JSONObject featureBike;
+    JSONObject featureBike2;
+    JSONObject featureBike3;
     LatLng ZielPosition = null;
     LatLng StartPosition = null;
 
@@ -84,7 +92,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         String Zeit = null;
         try {
             features = antwortBike.getJSONArray("features");
-            JSONObject featureBike = features.getJSONObject(0);
+            featureBike = features.getJSONObject(0);
             JSONObject propertiesBike = featureBike.getJSONObject("properties");
             JSONObject summaryBike = propertiesBike.getJSONObject("summary");
             Entfernung = String.valueOf(summaryBike.getDouble("distance"));
@@ -106,7 +114,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         String Zeit2 = null;
         try {
             features2 = antwortBike.getJSONArray("features");
-            JSONObject featureBike2 = features2.getJSONObject(1);
+            featureBike2 = features2.getJSONObject(1);
             JSONObject propertiesBike2 = featureBike2.getJSONObject("properties");
             JSONObject summaryBike2 = propertiesBike2.getJSONObject("summary");
             Entfernung2 = String.valueOf(summaryBike2.getDouble("distance"));
@@ -128,7 +136,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         String Zeit3 = null;
         try {
             features3 = antwortBike.getJSONArray("features");
-            JSONObject featureBike3 = features3.getJSONObject(2);
+            featureBike3 = features3.getJSONObject(2);
             JSONObject propertiesBike3 = featureBike3.getJSONObject("properties");
             JSONObject summaryBike3 = propertiesBike3.getJSONObject("summary");
             Entfernung3 = String.valueOf(summaryBike3.getDouble("distance"));
@@ -143,38 +151,6 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
 
         TextView fahrradZeit3 = (TextView) findViewById(R.id.txt_zeit_fahrrad_route3);
         fahrradZeit3.setText(Zeit3+" sec");
-/*
-        TextView auto1Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route1);
-        auto1Laenge.setText(Entfernung);
-
-        TextView auto1Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route1);
-        auto1Zeit.setText(Zeit);
-
-        TextView auto1Co2 = (TextView) findViewById(R.id.co2_auto_route1);
-        auto1Co2.setText(CO2);
-
-        TextView auto2Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route2);
-        auto2Laenge.setText(Entfernung);
-
-        TextView auto2Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route2);
-        auto2Zeit.setText(Zeit);
-
-        TextView auto2Co2 = (TextView) findViewById(R.id.co2_auto_route2);
-        auto2Co2.setText(CO2);
-
-        TextView auto3Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route3);
-        auto3Laenge.setText(Entfernung);
-
-        TextView auto3Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route3);
-        auto3Zeit.setText(Zeit);
-
-        TextView auto3Co2 = (TextView) findViewById(R.id.co2_auto_route3);
-        auto3Co2.setText(CO2);
-
-
- */
-
-
 
 
     }
@@ -266,6 +242,109 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureBike);
+        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureBike2);
+        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureCar3);
+
+
+
+        //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
+
+        /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
+         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
+
+
+        //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
+        //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
+
+        Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
+                ,getResources().getColor(R.color.fuss1)};
+
+
+        ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
+            listCarRed.add(feature);
+        }
+
+
+        ArrayList <GeoJsonFeature> listCarBlue = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarBlue.getFeatures()) {
+            listCarBlue.add(feature);
+        }
+
+        ArrayList <GeoJsonFeature> listCarGreen = new ArrayList<GeoJsonFeature>();
+        for (GeoJsonFeature feature : layerCarGreen.getFeatures()) {
+            listCarGreen.add(feature);
+        }
+
+        if (listCarRed.size()>2){
+            layerCarRed.removeFeature(listCarRed.get(2));}
+
+        if (listCarRed.size()>1){
+            layerCarRed.removeFeature(listCarRed.get(1));}
+
+        if (listCarBlue.size()>2){
+            layerCarBlue.removeFeature(listCarBlue.get(2));}
+
+        if (listCarBlue.size()>1){
+            layerCarBlue.removeFeature(listCarBlue.get(0));}
+
+        if (listCarGreen.size()>2){
+            layerCarGreen.removeFeature(listCarGreen.get(1));}
+
+        if (listCarGreen.size()>1){
+            layerCarGreen.removeFeature(listCarGreen.get(0));}
+
+
+        Log.i("ListeAuto1",String.valueOf(listCarRed));
+        Log.i("LayerAuto1", String.valueOf(layerCarRed));
+
+        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+
+        lineStringStyleCar1.setColor(colours[0]);
+        lineStringStyleCar2.setColor(colours[1]);
+        lineStringStyleCar3.setColor(colours[2]);
+
+        layerCarRed.addLayerToMap();
+        layerCarBlue.addLayerToMap();
+        layerCarGreen.addLayerToMap();
+
+        googleMap.addMarker(new MarkerOptions().position(StartPosition));
+        googleMap.addMarker(new MarkerOptions().position(ZielPosition));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
+
+
+        Button route1Car = (Button) findViewById(R.id.btn_aendern_auto_route1);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar));
+            }
+        });
+
+        Button route2Car = (Button) findViewById(R.id.btn_aendern_auto_route2);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar2));
+            }
+        });
+
+        Button route3Car = (Button) findViewById(R.id.btn_aendern_auto_route3);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar3));
+            }
+        });
 
         GeoJsonLayer layerBike = new GeoJsonLayer(googleMap, antwortBike);
 

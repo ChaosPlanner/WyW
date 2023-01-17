@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,36 +165,6 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
 
         TextView autoZeit3 = (TextView) findViewById(R.id.txt_zeit_auto_route3);
         autoZeit3.setText(Zeit3+" sec");
-/*
-        TextView auto1Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route1);
-        auto1Laenge.setText(Entfernung);
-
-        TextView auto1Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route1);
-        auto1Zeit.setText(Zeit);
-
-        TextView auto1Co2 = (TextView) findViewById(R.id.co2_auto_route1);
-        auto1Co2.setText(CO2);
-
-        TextView auto2Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route2);
-        auto2Laenge.setText(Entfernung);
-
-        TextView auto2Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route2);
-        auto2Zeit.setText(Zeit);
-
-        TextView auto2Co2 = (TextView) findViewById(R.id.co2_auto_route2);
-        auto2Co2.setText(CO2);
-
-        TextView auto3Laenge = (TextView) findViewById(R.id.txt_laenge_auto_route3);
-        auto3Laenge.setText(Entfernung);
-
-        TextView auto3Zeit = (TextView) findViewById(R.id.txt_zeit_auto_route3);
-        auto3Zeit.setText(Zeit);
-
-        TextView auto3Co2 = (TextView) findViewById(R.id.co2_auto_route3);
-        auto3Co2.setText(CO2);
-
-
- */
 
 
 
@@ -363,6 +335,36 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
+
+        Button route1Car = (Button) findViewById(R.id.btn_aendern_auto_route1);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar));
+            }
+        });
+
+        Button route2Car = (Button) findViewById(R.id.btn_aendern_auto_route2);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar2));
+            }
+        });
+
+        Button route3Car = (Button) findViewById(R.id.btn_aendern_auto_route3);
+        route1Car.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureCar3));
+            }
+        });
     }
+
+
+
 }
 
