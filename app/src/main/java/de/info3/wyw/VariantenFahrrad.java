@@ -245,7 +245,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
 
         GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureBike);
         GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureBike2);
-        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureCar3);
+        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureBike3);
 
 
 
@@ -297,8 +297,8 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             layerCarGreen.removeFeature(listCarGreen.get(0));}
 
 
-        Log.i("ListeAuto1",String.valueOf(listCarRed));
-        Log.i("LayerAuto1", String.valueOf(layerCarRed));
+        Log.i("ListeFahrrad1",String.valueOf(listCarRed));
+        Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
 
         GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
         GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
@@ -323,8 +323,8 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureCar));
+                Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureBike));
             }
         });
 
@@ -332,8 +332,8 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureCar2));
+                Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureBike2));
             }
         });
 
@@ -341,8 +341,8 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureCar3));
+                Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
+                intent.putExtra("uebergeben1",String.valueOf(featureBike3));
             }
         });
 
@@ -359,8 +359,6 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
         //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
 
-        Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
-                ,getResources().getColor(R.color.fuss1)};
 
         /**for (GeoJsonFeature feature : layerBike.getFeatures()) {
          // Do something to the feature
