@@ -86,7 +86,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace();
         }
 
-        JSONArray features = null;
+        JSONArray features;
 
         String Entfernung = null;
         String Zeit = null;
@@ -251,42 +251,6 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-/*
-        ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
-            listCarRed.add(feature);
-        }
-
-
-        ArrayList <GeoJsonFeature> listCarBlue = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarBlue.getFeatures()) {
-            listCarBlue.add(feature);
-        }
-
-        ArrayList <GeoJsonFeature> listCarGreen = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarGreen.getFeatures()) {
-            listCarGreen.add(feature);
-        }
-
-        if (listCarRed.size()>2){
-            layerCarRed.removeFeature(listCarRed.get(2));}
-
-        if (listCarRed.size()>1){
-            layerCarRed.removeFeature(listCarRed.get(1));}
-
-        if (listCarBlue.size()>2){
-            layerCarBlue.removeFeature(listCarBlue.get(2));}
-
-        if (listCarBlue.size()>1){
-            layerCarBlue.removeFeature(listCarBlue.get(0));}
-
-        if (listCarGreen.size()>2){
-            layerCarGreen.removeFeature(listCarGreen.get(1));}
-
-        if (listCarGreen.size()>1){
-            layerCarGreen.removeFeature(listCarGreen.get(0));}
-
-*/
 
         Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
 
@@ -309,32 +273,32 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
 
-        Button route1Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route1);
-        route1Car.setOnClickListener(new View.OnClickListener(){
+        Button route1Bike = (Button) findViewById(R.id.btn_aendern_fahrrad_route1);
+        route1Bike.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureBike));
+                intent.putExtra("uebergeben2",String.valueOf(featureBike));
                 startActivity(intent);
             }
         });
 
-        Button route2Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route2);
-        route1Car.setOnClickListener(new View.OnClickListener(){
+        Button route2Bike = (Button) findViewById(R.id.btn_aendern_fahrrad_route2);
+        route2Bike.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureBike2));
+                intent.putExtra("uebergeben2",String.valueOf(featureBike2));
                 startActivity(intent);
             }
         });
 
-        Button route3Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route3);
-        route1Car.setOnClickListener(new View.OnClickListener(){
+        Button route3Bike = (Button) findViewById(R.id.btn_aendern_fahrrad_route3);
+        route3Bike.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenFahrrad.this,Ergebnisse.class);
-                intent.putExtra("uebergeben1",String.valueOf(featureBike3));
+                intent.putExtra("uebergeben2",String.valueOf(featureBike3));
                 startActivity(intent);
             }
         });

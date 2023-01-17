@@ -302,72 +302,12 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
 
 
                     }
-                }
-                );
+                });
 
                 MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffuss.getJsonObjectRequest());
 
-
             }
         });
-
-/**
-
-        TextView autoCo2 = (TextView) findViewById(R.id.co2_auto);
-        autoCo2.setText(CO2);
-
-
-
-        TextView fahrradCo2 = (TextView) findViewById(R.id.co2_fahrrad);
-        fahrradCo2.setText(CO2);
-
-
-
-        TextView fussCo2 = (TextView) findViewById(R.id.co2_fuss);
-        fussLaenge.setText(CO2);
-
-
-        Button aendernAuto = (Button) findViewById(R.id.btn_aendern_auto);
-        aendernAuto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            Abfrage ORS
-
-            solange ORS Abfrage:
-
-            ProgressBar progressBarAuto = (ProgressBar) findViewById(R.id.progress_bar_auto);
-            progressBarAuto.setVisibility(View.VISIBLE);
-
-            wenn Ergebniss von server
-             progressBarAuto.setVisibility(View.GONE);
-
-
-
-                Intent intent = new Intent(Ergebnisse.this,tbd.class);
-                startActivity(intent);
-            }
-        });
-
-        Button aendernFahrrad = (Button) findViewById(R.id.btn_aendern_fahrrad);
-        aendernFahrrad.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Ergebnisse.this,tbd.class);
-                startActivity(intent)
-            }
-        });
-
-        Button aendernFuss = (Button) findViewById(R.id.btn_aendern_fuss);
-        aendernFuss.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Ergebnisse.this,tbd.class);
-                startActivity(intent)
-            }
-        });
-
-*/
 
     }
 

@@ -265,57 +265,9 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureCar3);
 
 
-
-        //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
-
-        /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
-        lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
-
-
-        //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
-        //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
-
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-
-        ArrayList <GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
-            listCarRed.add(feature);
-        }
-
-
-        ArrayList <GeoJsonFeature> listCarBlue = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarBlue.getFeatures()) {
-            listCarBlue.add(feature);
-        }
-
-        ArrayList <GeoJsonFeature> listCarGreen = new ArrayList<GeoJsonFeature>();
-        for (GeoJsonFeature feature : layerCarGreen.getFeatures()) {
-            listCarGreen.add(feature);
-        }
-
-        if (listCarRed.size()>2){
-            layerCarRed.removeFeature(listCarRed.get(2));}
-
-        if (listCarRed.size()>1){
-            layerCarRed.removeFeature(listCarRed.get(1));}
-
-        if (listCarBlue.size()>2){
-            layerCarBlue.removeFeature(listCarBlue.get(2));}
-
-        if (listCarBlue.size()>1){
-            layerCarBlue.removeFeature(listCarBlue.get(0));}
-
-        if (listCarGreen.size()>2){
-            layerCarGreen.removeFeature(listCarGreen.get(1));}
-
-        if (listCarGreen.size()>1){
-            layerCarGreen.removeFeature(listCarGreen.get(0));}
-
-
-        Log.i("ListeAuto1",String.valueOf(listCarRed));
-        Log.i("LayerAuto1", String.valueOf(layerCarRed));
 
         GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
         GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
@@ -347,7 +299,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         });
 
         Button route2Car = (Button) findViewById(R.id.btn_aendern_auto_route2);
-        route1Car.setOnClickListener(new View.OnClickListener(){
+        route2Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
@@ -357,7 +309,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
         });
 
         Button route3Car = (Button) findViewById(R.id.btn_aendern_auto_route3);
-        route1Car.setOnClickListener(new View.OnClickListener(){
+        route3Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);

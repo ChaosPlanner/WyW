@@ -8,6 +8,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,10 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
     double startPositionLat;
     double startPositionlong;
 
+    JSONObject featureFoot;
+    JSONObject featureFoot2;
+    JSONObject featureFoot3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +93,7 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
         String Zeit = null;
         try {
             features = antwortFoot.getJSONArray("features");
-            JSONObject featureFoot = features.getJSONObject(0);
+            featureFoot = features.getJSONObject(0);
             JSONObject propertiesFoot = featureFoot.getJSONObject("properties");
             JSONObject summaryFoot = propertiesFoot.getJSONObject("summary");
             Entfernung = String.valueOf(summaryFoot.getDouble("distance"));
@@ -108,7 +115,7 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
         String Zeit2 = null;
         try {
             features2 = antwortFoot.getJSONArray("features");
-            JSONObject featureFoot2 = features2.getJSONObject(1);
+            featureFoot2 = features2.getJSONObject(1);
             JSONObject propertiesFoot2 = featureFoot2.getJSONObject("properties");
             JSONObject summaryFoot2 = propertiesFoot2.getJSONObject("summary");
             Entfernung2 = String.valueOf(summaryFoot2.getDouble("distance"));
@@ -130,7 +137,7 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
         String Zeit3 = null;
         try {
             features3 = antwortFoot.getJSONArray("features");
-            JSONObject featureFoot3 = features3.getJSONObject(2);
+            featureFoot3 = features3.getJSONObject(2);
             JSONObject propertiesFoot3 = featureFoot3.getJSONObject("properties");
             JSONObject summaryFoot3 = propertiesFoot3.getJSONObject("summary");
             Entfernung3 = String.valueOf(summaryFoot3.getDouble("distance"));
@@ -145,38 +152,6 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
 
         TextView fussZeit3 = (TextView) findViewById(R.id.txt_zeit_fuss_route3);
         fussZeit3.setText(Zeit3+" sec");
-/*
-        TextView fuss1Laenge = (TextView) findViewById(R.id.txt_laenge_fuss_route1);
-        fuss1Laenge.setText(Entfernung);
-
-        TextView fuss1Zeit = (TextView) findViewById(R.id.txt_zeit_fuss_route1);
-        fuss1Zeit.setText(Zeit);
-
-        TextView fuss1Co2 = (TextView) findViewById(R.id.co2_fuss_route1);
-        fuss1Co2.setText(CO2);
-
-        TextView fuss2Laenge = (TextView) findViewById(R.id.txt_laenge_fuss_route2);
-        fuss2Laenge.setText(Entfernung);
-
-        TextView fuss2Zeit = (TextView) findViewById(R.id.txt_zeit_fuss_route2);
-        fuss2Zeit.setText(Zeit);
-
-        TextView fuss2Co2 = (TextView) findViewById(R.id.co2_fuss_route2);
-        fuss2Co2.setText(CO2);
-
-        TextView fuss3Laenge = (TextView) findViewById(R.id.txt_laenge_fuss_route3);
-        fuss3Laenge.setText(Entfernung);
-
-        TextView fuss3Zeit = (TextView) findViewById(R.id.txt_zeit_fuss_route3);
-        fuss3Zeit.setText(Zeit);
-
-        TextView fuss3Co2 = (TextView) findViewById(R.id.co2_fuss_route3);
-        fuss3Co2.setText(CO2);
-
-
- */
-
-
 
 
     }
@@ -269,29 +244,28 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerFoot = new GeoJsonLayer(googleMap, antwortFoot);
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureFoot);
+        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureFoot2);
+        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureFoot3);
 
-        layerFoot.addLayerToMap();
-
-        //GeoJsonFeature lineStringFeatureFoot1 = (GeoJsonFeature) layerFoot.getFeature(1);
-
-        /**GeoJsonLineStringStyle lineStringStyle = layerFoot.getDefaultLineStringStyle();
-         lineStringStyle.setColor(getResources().getColor(R.color.fuss1));*/
-
-        GeoJsonLineStringStyle lineStringStyleFoot1 = layerFoot.getDefaultLineStringStyle();
-        //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
-        //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
 
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-        for (GeoJsonFeature feature : layerFoot.getFeatures()) {
-            // Do something to the feature
 
-            lineStringStyleFoot1.setColor(colours[i]);
-            feature.setLineStringStyle(lineStringStyleFoot1);
-            i++;
-        }
+        Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
+
+        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+
+        lineStringStyleCar1.setColor(colours[0]);
+        lineStringStyleCar2.setColor(colours[1]);
+        lineStringStyleCar3.setColor(colours[2]);
+
+        layerCarRed.addLayerToMap();
+        layerCarBlue.addLayerToMap();
+        layerCarGreen.addLayerToMap();
 
 
         googleMap.addMarker(new MarkerOptions().position(StartPosition));
@@ -299,6 +273,36 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
+
+        Button route1Bike = (Button) findViewById(R.id.btn_aendern_fuss_route1);
+        route1Bike.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenFuss.this,Ergebnisse.class);
+                intent.putExtra("uebergeben3",String.valueOf(featureFoot));
+                startActivity(intent);
+            }
+        });
+
+        Button route2Bike = (Button) findViewById(R.id.btn_aendern_fuss_route2);
+        route2Bike.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenFuss.this,Ergebnisse.class);
+                intent.putExtra("uebergeben3",String.valueOf(featureFoot2));
+                startActivity(intent);
+            }
+        });
+
+        Button route3Bike = (Button) findViewById(R.id.btn_aendern_fuss_route3);
+        route3Bike.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(VariantenFuss.this,Ergebnisse.class);
+                intent.putExtra("uebergeben3",String.valueOf(featureFoot3));
+                startActivity(intent);
+            }
+        });
 
     }
 }
