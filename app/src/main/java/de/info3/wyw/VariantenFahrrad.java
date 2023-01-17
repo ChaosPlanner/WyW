@@ -261,7 +261,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-
+/*
         ArrayList<GeoJsonFeature> listCarRed = new ArrayList<GeoJsonFeature>();
         for (GeoJsonFeature feature : layerCarRed.getFeatures()) {
             listCarRed.add(feature);
@@ -296,8 +296,8 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         if (listCarGreen.size()>1){
             layerCarGreen.removeFeature(listCarGreen.get(0));}
 
+*/
 
-        Log.i("ListeFahrrad1",String.valueOf(listCarRed));
         Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
 
         GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
@@ -319,7 +319,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
 
-        Button route1Car = (Button) findViewById(R.id.btn_aendern_auto_route1);
+        Button route1Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route1);
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -328,7 +328,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        Button route2Car = (Button) findViewById(R.id.btn_aendern_auto_route2);
+        Button route2Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route2);
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -337,7 +337,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             }
         });
 
-        Button route3Car = (Button) findViewById(R.id.btn_aendern_auto_route3);
+        Button route3Car = (Button) findViewById(R.id.btn_aendern_fahrrad_route3);
         route1Car.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -345,35 +345,6 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
                 intent.putExtra("uebergeben1",String.valueOf(featureBike3));
             }
         });
-
-        GeoJsonLayer layerBike = new GeoJsonLayer(googleMap, antwortBike);
-
-        layerBike.addLayerToMap();
-
-        //GeoJsonFeature lineStringFeatureCar1 = (GeoJsonFeature) layerCar.getFeature(1);
-
-        /**GeoJsonLineStringStyle lineStringStyle = layerCar.getDefaultLineStringStyle();
-         lineStringStyle.setColor(getResources().getColor(R.color.auto1));*/
-
-        GeoJsonLineStringStyle lineStringStyleBike1 = layerBike.getDefaultLineStringStyle();
-        //lineStringStyleCar1.setColor(getResources().getColor(R.color.fahrrad1));
-        //lineStringFeatureCar1.setLineStringStyle(lineStringStyleCar1);
-
-
-        /**for (GeoJsonFeature feature : layerBike.getFeatures()) {
-         // Do something to the feature
-
-         lineStringStyleBike1.setColor(colours[i]);
-         feature.setLineStringStyle(lineStringStyleBike1);
-         i++;
-         }*/
-
-
-        googleMap.addMarker(new MarkerOptions().position(StartPosition));
-        googleMap.addMarker(new MarkerOptions().position(ZielPosition));
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(StartPosition));
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(StartPosition,15));
 
     }
 }

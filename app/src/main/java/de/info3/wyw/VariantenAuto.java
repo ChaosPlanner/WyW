@@ -342,6 +342,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureCar));
+                startActivity(intent);
             }
         });
 
@@ -351,6 +352,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureCar2));
+                startActivity(intent);
             }
         });
 
@@ -360,6 +362,7 @@ public class VariantenAuto extends AppCompatActivity implements OnMapReadyCallba
             public void onClick(View view) {
                 Intent intent = new Intent(VariantenAuto.this,Ergebnisse.class);
                 intent.putExtra("uebergeben1",String.valueOf(featureCar3));
+                startActivity(intent);
             }
         });
     }
