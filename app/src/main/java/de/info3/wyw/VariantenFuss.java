@@ -244,29 +244,28 @@ public class VariantenFuss extends AppCompatActivity implements OnMapReadyCallba
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureFoot);
-        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureFoot2);
-        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureFoot3);
-
-
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
-
-        Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
-
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureFoot);
         GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
-
         lineStringStyleCar1.setColor(colours[0]);
-        lineStringStyleCar2.setColor(colours[1]);
-        lineStringStyleCar3.setColor(colours[2]);
-
         layerCarRed.addLayerToMap();
-        layerCarBlue.addLayerToMap();
-        layerCarGreen.addLayerToMap();
 
+        if (featureFoot2 != null){
+            GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureFoot2);
+            GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+            lineStringStyleCar2.setColor(colours[1]);
+            layerCarBlue.addLayerToMap();
+        }
+        if (featureFoot3 != null) {
+            GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureFoot3);
+            GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+            lineStringStyleCar3.setColor(colours[2]);
+            layerCarGreen.addLayerToMap();
+        }
+
+        Log.i("LayerFuß1", String.valueOf(layerCarRed));
 
         googleMap.addMarker(new MarkerOptions().position(StartPosition));
         googleMap.addMarker(new MarkerOptions().position(ZielPosition));

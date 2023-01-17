@@ -110,7 +110,7 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
             e.printStackTrace();
         }
 
-        JSONArray features = null;
+        JSONArray features;
 
         String Entfernung = null;
         String Zeit = null;
@@ -154,7 +154,7 @@ public class Ergebnisse extends AppCompatActivity implements OnMapReadyCallback 
         TextView fahrradZeit = (TextView) findViewById(R.id.txt_zeit_fahrrad);
         fahrradZeit.setText(ZeitBike);
 
-        JSONArray featuresFoot = null;
+        JSONArray featuresFoot;
 
         String EntfernungFoot = null;
         String ZeitFoot = null;

@@ -64,6 +64,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_varianten_fahrrad);
+
         Bundle mapViewBundle = null;
         if(savedInstanceState != null){
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -108,7 +109,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         TextView fahrradZeit = (TextView) findViewById(R.id.txt_zeit_fahrrad_route1);
         fahrradZeit.setText(Zeit+" sec");
 
-        JSONArray features2 = null;
+        JSONArray features2;
 
         String Entfernung2 = null;
         String Zeit2 = null;
@@ -130,7 +131,7 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
         TextView fahrradZeit2 = (TextView) findViewById(R.id.txt_zeit_fahrrad_route2);
         fahrradZeit2.setText(Zeit2+" sec");
 
-        JSONArray features3 = null;
+        JSONArray features3;
 
         String Entfernung3 = null;
         String Zeit3 = null;
@@ -243,28 +244,30 @@ public class VariantenFahrrad extends AppCompatActivity implements OnMapReadyCal
             e.printStackTrace();
         }
 
-        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureBike);
-        GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureBike2);
-        GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureBike3);
-
-
         Integer[] colours = {getResources().getColor(R.color.auto1),getResources().getColor(R.color.fahrrad1)
                 ,getResources().getColor(R.color.fuss1)};
 
+        GeoJsonLayer layerCarRed = new GeoJsonLayer(googleMap, featureBike);
+        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
+        lineStringStyleCar1.setColor(colours[0]);
+        layerCarRed.addLayerToMap();
+
+        if (featureBike2 != null){
+            GeoJsonLayer layerCarBlue = new GeoJsonLayer(googleMap, featureBike2);
+            GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
+            lineStringStyleCar2.setColor(colours[1]);
+            layerCarBlue.addLayerToMap();
+        }
+        if (featureBike3 != null) {
+            GeoJsonLayer layerCarGreen = new GeoJsonLayer(googleMap, featureBike3);
+            GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
+            lineStringStyleCar3.setColor(colours[2]);
+            layerCarGreen.addLayerToMap();
+        }
 
         Log.i("LayerFahrrad1", String.valueOf(layerCarRed));
 
-        GeoJsonLineStringStyle lineStringStyleCar1 = layerCarRed.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar2 = layerCarBlue.getDefaultLineStringStyle();
-        GeoJsonLineStringStyle lineStringStyleCar3 = layerCarGreen.getDefaultLineStringStyle();
 
-        lineStringStyleCar1.setColor(colours[0]);
-        lineStringStyleCar2.setColor(colours[1]);
-        lineStringStyleCar3.setColor(colours[2]);
-
-        layerCarRed.addLayerToMap();
-        layerCarBlue.addLayerToMap();
-        layerCarGreen.addLayerToMap();
 
         googleMap.addMarker(new MarkerOptions().position(StartPosition));
         googleMap.addMarker(new MarkerOptions().position(ZielPosition));

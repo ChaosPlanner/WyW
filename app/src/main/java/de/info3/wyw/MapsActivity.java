@@ -104,120 +104,122 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View view) {
                 // Abfrage starten
 
-                //Nach Klicken des Buttons wird jetzt ein Loading-Spinner sichtbar.
-                ladeKreis.setVisibility(View.VISIBLE);
+                if (ZielPosition != null) {
+                    //Nach Klicken des Buttons wird jetzt ein Loading-Spinner sichtbar.
+                    ladeKreis.setVisibility(View.VISIBLE);
 
-                //Dann startet der Datenabruf...
-                //später String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude)
-                Datenabruf datenabruf1 = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
-                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlcar, new DatenabrufInterface(){
+                    //Dann startet der Datenabruf...
+                    //später String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude)
+                    Datenabruf datenabruf1 = new Datenabruf(String.valueOf(startlongitude), String.valueOf(startlatitude),
+                            String.valueOf(ZielPosition.longitude), String.valueOf(ZielPosition.latitude), urlcar, new DatenabrufInterface() {
 
-                    //... und wenn der Datenabruf fertig ist,
-                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
-                    @Override
-                    public void onSuccess(JSONObject response){
-                        Log.i("DatenabrufCar", String.valueOf(response));
-                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+                        //... und wenn der Datenabruf fertig ist,
+                        // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                        @Override
+                        public void onSuccess(JSONObject response) {
+                            Log.i("DatenabrufCar", String.valueOf(response));
+                            //Log.i("BikeAntwort", String.valueOf(bikeResponse));
 
-                        carAntwort=response;
+                            carAntwort = response;
 
 
+                            //...und die nächste Activity wird aufgerufen.
 
-                        //...und die nächste Activity wird aufgerufen.
+                            if (carAntwort != null && bikeAntwort != null && footAntwort != null) {
+                                //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                                ladeKreis.setVisibility(GONE);
+                                Intent intent = new Intent(MapsActivity.this, Ergebnisse.class);
+                                intent.putExtra("uebergeben1", String.valueOf(carAntwort));
+                                intent.putExtra("uebergeben2", String.valueOf(bikeAntwort));
+                                intent.putExtra("uebergeben3", String.valueOf(footAntwort));
+                                intent.putExtra("uebergeben4", ZielPosition.latitude);
+                                intent.putExtra("uebergeben5", ZielPosition.longitude);
+                                intent.putExtra("uebergeben6", startlatitude);
+                                intent.putExtra("uebergeben7", startlongitude);
+                                startActivity(intent);
+                            }
 
-                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
-                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
-                            ladeKreis.setVisibility(GONE);
-                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
-                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
-                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
-                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
-                            intent.putExtra("uebergeben4",ZielPosition.latitude);
-                            intent.putExtra("uebergeben5",ZielPosition.longitude);
-                            intent.putExtra("uebergeben6",startlatitude);
-                            intent.putExtra("uebergeben7",startlongitude);
-                            startActivity(intent);
+
                         }
-
-
                     }
-                }
-                );
+                    );
 
-                Datenabruf datenabrufbike = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
-                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlbike, new DatenabrufInterface(){
+                    Datenabruf datenabrufbike = new Datenabruf(String.valueOf(startlongitude), String.valueOf(startlatitude),
+                            String.valueOf(ZielPosition.longitude), String.valueOf(ZielPosition.latitude), urlbike, new DatenabrufInterface() {
 
-                    //... und wenn der Datenabruf fertig ist,
-                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
-                    @Override
-                    public void onSuccess(JSONObject response){
-                        Log.i("DatenabrufBike", String.valueOf(response));
-                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+                        //... und wenn der Datenabruf fertig ist,
+                        // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                        @Override
+                        public void onSuccess(JSONObject response) {
+                            Log.i("DatenabrufBike", String.valueOf(response));
+                            //Log.i("BikeAntwort", String.valueOf(bikeResponse));
 
-                        bikeAntwort=response;
-
+                            bikeAntwort = response;
 
 
-                        //...und die nächste Activity wird aufgerufen.
+                            //...und die nächste Activity wird aufgerufen.
 
-                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
-                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
-                            ladeKreis.setVisibility(GONE);
-                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
-                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
-                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
-                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
-                            intent.putExtra("uebergeben4",ZielPosition.latitude);
-                            intent.putExtra("uebergeben5",ZielPosition.longitude);
-                            intent.putExtra("uebergeben6",startlatitude);
-                            intent.putExtra("uebergeben7",startlongitude);
-                            startActivity(intent);
+                            if (carAntwort != null && bikeAntwort != null && footAntwort != null) {
+                                //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                                ladeKreis.setVisibility(GONE);
+                                Intent intent = new Intent(MapsActivity.this, Ergebnisse.class);
+                                intent.putExtra("uebergeben1", String.valueOf(carAntwort));
+                                intent.putExtra("uebergeben2", String.valueOf(bikeAntwort));
+                                intent.putExtra("uebergeben3", String.valueOf(footAntwort));
+                                intent.putExtra("uebergeben4", ZielPosition.latitude);
+                                intent.putExtra("uebergeben5", ZielPosition.longitude);
+                                intent.putExtra("uebergeben6", startlatitude);
+                                intent.putExtra("uebergeben7", startlongitude);
+                                startActivity(intent);
+                            }
+
+
                         }
-
-
                     }
-                }
-                );
+                    );
 
-                Datenabruf datenabruffoot = new Datenabruf(String.valueOf(startlongitude),String.valueOf(startlatitude),
-                        String.valueOf(ZielPosition.longitude),String.valueOf(ZielPosition.latitude), urlfoot, new DatenabrufInterface(){
+                    Datenabruf datenabruffoot = new Datenabruf(String.valueOf(startlongitude), String.valueOf(startlatitude),
+                            String.valueOf(ZielPosition.longitude), String.valueOf(ZielPosition.latitude), urlfoot, new DatenabrufInterface() {
 
-                    //... und wenn der Datenabruf fertig ist,
-                    // sorgt das DatenabrufInterface dafür, dass es weiter geht.
-                    @Override
-                    public void onSuccess(JSONObject response){
-                        Log.i("DatenabrufFoot", String.valueOf(response));
-                        //Log.i("BikeAntwort", String.valueOf(bikeResponse));
+                        //... und wenn der Datenabruf fertig ist,
+                        // sorgt das DatenabrufInterface dafür, dass es weiter geht.
+                        @Override
+                        public void onSuccess(JSONObject response) {
+                            Log.i("DatenabrufFoot", String.valueOf(response));
+                            //Log.i("BikeAntwort", String.valueOf(bikeResponse));
 
-                        footAntwort=response;
-
+                            footAntwort = response;
 
 
-                        //...und die nächste Activity wird aufgerufen.
+                            //...und die nächste Activity wird aufgerufen.
 
-                        if (carAntwort !=null&& bikeAntwort !=null && footAntwort != null){
-                            //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
-                            ladeKreis.setVisibility(GONE);
-                            Intent intent = new Intent(MapsActivity.this,Ergebnisse.class);
-                            intent.putExtra("uebergeben1",String.valueOf(carAntwort));
-                            intent.putExtra("uebergeben2",String.valueOf(bikeAntwort));
-                            intent.putExtra("uebergeben3",String.valueOf(footAntwort));
-                            intent.putExtra("uebergeben4",ZielPosition.latitude);
-                            intent.putExtra("uebergeben5",ZielPosition.longitude);
-                            intent.putExtra("uebergeben6",startlatitude);
-                            intent.putExtra("uebergeben7",startlongitude);
-                            startActivity(intent);
+                            if (carAntwort != null && bikeAntwort != null && footAntwort != null) {
+                                //Jetzt wird auch die Lade-Animation wieder unsichtbar gemacht...
+                                ladeKreis.setVisibility(GONE);
+                                Intent intent = new Intent(MapsActivity.this, Ergebnisse.class);
+                                intent.putExtra("uebergeben1", String.valueOf(carAntwort));
+                                intent.putExtra("uebergeben2", String.valueOf(bikeAntwort));
+                                intent.putExtra("uebergeben3", String.valueOf(footAntwort));
+                                intent.putExtra("uebergeben4", ZielPosition.latitude);
+                                intent.putExtra("uebergeben5", ZielPosition.longitude);
+                                intent.putExtra("uebergeben6", startlatitude);
+                                intent.putExtra("uebergeben7", startlongitude);
+                                startActivity(intent);
+                            }
+
+
                         }
-
-
                     }
+                    );
+
+                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruf1.getJsonObjectRequest());
+                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufbike.getJsonObjectRequest());
+                    MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffoot.getJsonObjectRequest());
+
                 }
-                );
-
-                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruf1.getJsonObjectRequest());
-                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabrufbike.getJsonObjectRequest());
-                MySingleton.getInstance(getApplicationContext()).addToRequestQueue(datenabruffoot.getJsonObjectRequest());
-
+                else {
+                    Toast.makeText(MapsActivity.this,"Bitte geben Sie ein Ziel an.",Toast.LENGTH_LONG).show();
+                }
             }
         });
 
